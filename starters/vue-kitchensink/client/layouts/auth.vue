@@ -11,6 +11,6 @@
 </template>
 
 <script setup>
-import { useRouteContext } from '@fastify/vue/client'
-const { actions, state } = useRouteContext()
+import { useRouteContext } from "@zanmato/fastify-vue/client";
+const { actions, state } = useRouteContext();
 </script>

@@ -1,7 +1,6 @@
-
 export function generateStores(keys) {
   let code = `
-import { useRouteContext } from '@fastify/vue/client'
+import { useRouteContext } from '@zanmato/fastify-vue/client'
 
 function storeGetter (proxy, prop) {
   if (!proxy.context) {
@@ -20,7 +19,7 @@ function storeGetter (proxy, prop) {
     return proxy.wrappers[prop]
   }
 }
-`
+`;
   for (const key of keys) {
     code += `
 export const ${key} = new Proxy({
@@ -30,10 +29,10 @@ export const ${key} = new Proxy({
 }, { 
   get: storeGetter
 })
-`
+`;
   }
   return {
     code,
-    map: null
-  }
+    map: null,
+  };
 }

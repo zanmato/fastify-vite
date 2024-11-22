@@ -1,7 +1,7 @@
 {
   "type": "module",
   "main": "index.js",
-  "name": "@fastify/vue",
+  "name": "@zanmato/fastify-vue",
   "description": "The official @fastify/vite renderer for Vue",
   "version": "1.0.0-alpha.6",
   "files": [
@@ -36,7 +36,7 @@
     "./server": "./server.js"
   },
   "dependencies": {
-    "@fastify/vite": "workspace:^",
+    "@fastify/vite": "8.0.0-alpha.2",
     "acorn": "^8.12.1",
     "acorn-walk": "^8.3.4",
     "devalue": "latest",

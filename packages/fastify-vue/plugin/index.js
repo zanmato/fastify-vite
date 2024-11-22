@@ -1,95 +1,93 @@
-import { readFileSync, existsSync } from 'node:fs'
-import { join } from 'node:path'
-import { 
+import { readFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
+import {
   prefixes,
-  resolveId, 
-  loadSource, 
+  resolveId,
+  loadSource,
   loadVirtualModule,
-  createPlaceholderExports
-} from './virtual.js'
-import { closeBundle } from './preload.js'
-import { parseStateKeys } from './parsers.js'
-import { generateStores } from './stores.js'
+  createPlaceholderExports,
+} from "./virtual.js";
+import { closeBundle } from "./preload.js";
+import { parseStateKeys } from "./parsers.js";
+import { generateStores } from "./stores.js";
 
-export default function viteFastifyVue () {
+export default function viteFastifyVue() {
   const context = {
     root: null,
-  }
+  };
   return {
-    name: 'vite-plugin-fastify-vue',
+    name: "vite-plugin-zanmato-fastify-vue",
     config,
     configResolved: configResolved.bind(context),
     resolveId: resolveId.bind(context),
-    async load (id) {
-      if (id.includes('?server') && !context.resolvedConfig.build.ssr) {
-        const source = loadSource(id)
-        return createPlaceholderExports(source)
+    async load(id) {
+      if (id.includes("?server") && !context.resolvedConfig.build.ssr) {
+        const source = loadSource(id);
+        return createPlaceholderExports(source);
       }
-      if (id.includes('?client') && context.resolvedConfig.build.ssr) {
-        const source = loadSource(id)
-        return createPlaceholderExports(source)
+      if (id.includes("?client") && context.resolvedConfig.build.ssr) {
+        const source = loadSource(id);
+        return createPlaceholderExports(source);
       }
-      const prefix = prefixes.find(_ => _.test(id))
+      const prefix = prefixes.find((_) => _.test(id));
       if (prefix) {
-        const [, virtual] = id.split(prefix)
+        const [, virtual] = id.split(prefix);
         if (virtual) {
-          if (virtual === 'stores') {
-            const contextPath = join(context.root, 'context.js')
+          if (virtual === "stores") {
+            const contextPath = join(context.root, "context.js");
             if (existsSync(contextPath)) {
-              const keys = parseStateKeys(readFileSync(contextPath, 'utf8'))
-              return generateStores(keys)
+              const keys = parseStateKeys(readFileSync(contextPath, "utf8"));
+              return generateStores(keys);
             }
-            return
+            return;
           }
-          return loadVirtualModule(virtual)
+          return loadVirtualModule(virtual);
         }
       }
     },
     transformIndexHtml: {
-      order: 'post',
-      handler: transformIndexHtml.bind(context)
+      order: "post",
+      handler: transformIndexHtml.bind(context),
     },
     closeBundle: closeBundle.bind(context),
-  }
+  };
 }
 
-function transformIndexHtml (html, { bundle }) {
+function transformIndexHtml(html, { bundle }) {
   if (!bundle) {
-    return
+    return;
   }
-  this.indexHtml = html
-  this.resolvedBundle = bundle
+  this.indexHtml = html;
+  this.resolvedBundle = bundle;
 }
 
-function configResolved (config) {
-  this.resolvedConfig = config
-  this.root = config.root
+function configResolved(config) {
+  this.resolvedConfig = config;
+  this.root = config.root;
 }
 
-function config (config, { isSsrBuild, command }) {
-  if (command === 'build') {
+function config(config, { isSsrBuild, command }) {
+  if (command === "build") {
     config.build.rollupOptions = {
-      input: isSsrBuild ? config.build.ssr : '/index.html',
+      input: isSsrBuild ? config.build.ssr : "/index.html",
       output: {
-        format: 'es',
+        format: "es",
       },
-      onwarn
-    }
+      onwarn,
+    };
   }
 }
 
-function onwarn (warning, rollupWarn) {
+function onwarn(warning, rollupWarn) {
   if (
     !(
-      warning.code == 'PLUGIN_WARNING' && 
-      warning.message?.includes?.('dynamic import will not move module into another chunk')
-    )
-    &&
-    !(
-      warning.code == 'UNUSED_EXTERNAL_IMPORT' && 
-      warning.exporter === 'vue'
-    )
+      warning.code == "PLUGIN_WARNING" &&
+      warning.message?.includes?.(
+        "dynamic import will not move module into another chunk"
+      )
+    ) &&
+    !(warning.code == "UNUSED_EXTERNAL_IMPORT" && warning.exporter === "vue")
   ) {
-    rollupWarn(warning)
+    rollupWarn(warning);
   }
 }
