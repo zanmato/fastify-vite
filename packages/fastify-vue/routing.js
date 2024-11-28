@@ -120,9 +120,9 @@ export async function createRoute(
     handler = (_, reply) => reply.html();
   } else {
     const { id } = route;
-    const htmlPath = id.replace(/pages\/(.*?)\.vue$/, "client/html/$1.html");
+    const htmlPath = id.replace(/pages\/(.*?)\.vue$/, "html/$1.html");
     const htmlSource = readFileSync(
-      join(config.vite.root, config.vite.build.outDir, htmlPath),
+      join(config.vite.root, config.vite.fastify.clientOutDir, htmlPath),
       "utf8"
     );
     const htmlFunction = createHtmlFunction(htmlSource, scope, config);
