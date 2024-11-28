@@ -5,10 +5,10 @@
     "lint": "biome check --write ."
   },
   "bugs": {
-    "url": "https://github.com/fastify/fastify-vite/issues"
+    "url": "https://github.com/zanmato/fastify-vite/issues"
   },
   "deprecated": false,
-  "description": "Official Fastify plugin for Vite integration.",
+  "description": "Fork of the Fastify plugin for Vite integration.",
   "files": [
     "config.js",
     "html.js",
@@ -34,17 +34,17 @@
   "homepage": "https://fastify-vite.dev/",
   "license": "MIT",
   "main": "index.js",
-  "name": "@fastify/vite",
+  "name": "@zanmato/fastify-vite",
   "types": "./types/index.d.ts",
   "typings": "./types/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fastify/fastify-vite.git"
+    "url": "git+https://github.com/zanmato/fastify-vite.git"
   },
   "publishConfig": {
     "access": "public"
   },
-  "version": "8.0.0-alpha.2",
+  "version": "8.0.0-alpha.3",
   "optionalDependencies": {
     "vite": "^5.4.8"
   },

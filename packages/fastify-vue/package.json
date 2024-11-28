@@ -2,8 +2,8 @@
   "type": "module",
   "main": "index.js",
   "name": "@zanmato/fastify-vue",
-  "description": "The official @fastify/vite renderer for Vue",
-  "version": "1.0.0-alpha.6",
+  "description": "Fork of the @fastify/vite renderer for Vue",
+  "version": "1.0.0-alpha.9",
   "files": [
     "plugin/index.js",
     "plugin/parsers.js",
@@ -36,7 +36,7 @@
     "./server": "./server.js"
   },
   "dependencies": {
-    "@fastify/vite": "8.0.0-alpha.2",
+    "@zanmato/fastify-vite": "8.0.0-alpha.3",
     "acorn": "^8.12.1",
     "acorn-walk": "^8.3.4",
     "devalue": "latest",
@@ -56,7 +56,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fastify/fastify-vite.git"
+    "url": "git+https://github.com/zanmato/fastify-vite.git"
   },
   "keywords": [
     "fastify",
@@ -64,7 +64,7 @@
     "vue"
   ],
   "bugs": {
-    "url": "https://github.com/fastify/fastify-vite/issues"
+    "url": "https://github.com/zanmato/fastify-vite/issues"
   },
   "homepage": "https://fastify-vite.dev/vue/"
 }

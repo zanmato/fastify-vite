@@ -1,12 +1,12 @@
-import { createHtmlTemplateFunction } from '@fastify/vite/utils'
-import { HTMLRewriter } from 'html-rewriter-wasm'
+import { createHtmlTemplateFunction } from "@zanmato/fastify-vite/utils";
+import { HTMLRewriter } from "html-rewriter-wasm";
 
-export async function createHtmlTemplates (source, config) {
-  const el = '<!-- element -->'
+export async function createHtmlTemplates(source, config) {
+  const el = "<!-- element -->";
 
-  const universal = source.split(el)
-  const serverOnlyRaw = await removeClientModule(source, config)
-  const serverOnly = serverOnlyRaw.split(el)
+  const universal = source.split(el);
+  const serverOnlyRaw = await removeClientModule(source, config);
+  const serverOnly = serverOnlyRaw.split(el);
 
   return {
     // Templates for client-only and universal rendering
@@ -19,33 +19,33 @@ export async function createHtmlTemplates (source, config) {
       beforeElement: await createHtmlTemplateFunction(serverOnly[0]),
       afterElement: await createHtmlTemplateFunction(serverOnly[1]),
     },
-  }
+  };
 }
 
-async function removeClientModule (html, config) {
-  const decoder = new TextDecoder()
+async function removeClientModule(html, config) {
+  const decoder = new TextDecoder();
 
-  let output = ''
+  let output = "";
   const rewriter = new HTMLRewriter((outputChunk) => {
-    output += decoder.decode(outputChunk)
-  })
+    output += decoder.decode(outputChunk);
+  });
 
-  rewriter.on('script', {
-    element (element) {
+  rewriter.on("script", {
+    element(element) {
       for (const [attr, value] of element.attributes) {
-        if (attr === 'type' && value === 'module') {
-          element.replace('')
+        if (attr === "type" && value === "module") {
+          element.replace("");
         }
       }
     },
-  })
+  });
 
   try {
-    const encoder = new TextEncoder()
-    await rewriter.write(encoder.encode(html))
-    await rewriter.end()
-    return output
+    const encoder = new TextEncoder();
+    await rewriter.write(encoder.encode(html));
+    await rewriter.end();
+    return output;
   } finally {
-    rewriter.free()
+    rewriter.free();
   }
 }

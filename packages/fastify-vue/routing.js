@@ -1,6 +1,8 @@
 import Youch from "youch";
 import RouteContext from "./context.js";
 import { createHtmlFunction } from "./rendering.js";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 
 export async function prepareClient(client, _) {
   if (client.context instanceof Promise) {
